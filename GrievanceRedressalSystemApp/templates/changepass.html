@@ -1,0 +1,52 @@
+{% load static %}
+
+{% block content %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type='text/css' href="{% static 'css/changepass.css' %}">
+
+{% include 'navbar.html' with analytics=1 %}
+<div class="container">
+    <div class="row mx-2 mt-5 pt-4">
+        <h1 class="col-md-12 d-none d-md-block">Change Password</h1>
+        <h1 class="col-md-12 d-sm-block d-md-none text-center">Change Password</h1>
+    </div>
+    <div class="row px-2 my-3">
+        <div class="col-lg-6 mt-4">    
+            <form method="POST">
+            {% csrf_token %}
+                <div class="mb-2 ms-1">
+                    <label>Confirm Current Password</label>
+                </div>
+                <div class="mb-4">
+                    <input name="currpass" type="password" class="form-control" placeholder="Enter Current Password" required>
+                </div>
+                <div class="mb-2 ms-1">
+                    <label>Create New Password</label>
+                </div>
+                <div class="mb-2">
+                    <input name="newpass" type="password" class="form-control" placeholder="Enter New Password" required>
+                </div>
+                <div class="mb-5">
+                    <input name="newpass2" type="password" class="form-control" placeholder="Confirm New password" required>
+                </div>
+                <div class="text-end">
+                    <input type="submit" class="btn btn-primary" value="Change Password"/> 
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-5 mt-3 mx-auto">
+            <h5 class="px-4 mb-3 text-start">Create A Strong Password</h5>
+            <ul class="text-start ">
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password should not be a commonly used password.</li>
+                <li>Your password should not be entirely numeric.</li>
+                <li>Your password should be a combination of uppercase letters, lowercase letters, numbers, and symbols.</li>
+                <li>Try to keep your password significantly different from your previous passwords.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

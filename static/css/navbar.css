@@ -1,0 +1,38 @@
+
+body{
+    background: #FFFFE3;
+    padding-top: 60px; 
+}
+
+.navbar-custom {
+    background: #FFFFE3;
+    height: 60px;
+    border-bottom: 1px solid rgba(16, 16, 14, 0.35) !important;
+}
+
+.nv a{
+    color : rgba(16, 16, 14, 0.75); 
+    font-weight: 500;
+    padding: 0 1rem;
+}
+.link {
+    text-decoration: none;
+    color : rgba(16, 16, 14, 0.75); 
+    font-weight: 500;
+}
+
+.alert {
+    position: fixed;
+    width: 100%;
+    margin-bottom: 0 !important;
+}
+
+@media only screen and (max-width: 310px) {
+    .nav-link{
+        padding: 0 5px 0 5px;
+        font-size: 15px;
+    }
+    .nv a{
+        padding: 0 0.5rem;
+    }
+  }

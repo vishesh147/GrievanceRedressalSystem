@@ -1,0 +1,7 @@
+.banner{
+    border-right: 1px solid rgba(16, 16, 14, 0.35);
+}
+
+.banner h1{
+    font-size: 50px;
+}

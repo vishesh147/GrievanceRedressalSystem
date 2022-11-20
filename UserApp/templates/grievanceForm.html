@@ -1,0 +1,55 @@
+{% load static %}
+
+{% block content %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create Grievance</title>
+<link rel="stylesheet" type='text/css' href="{% static 'css/grievanceForm.css' %}">
+
+{% include 'navbar.html' with user=1 %}
+<div class="container w-90">
+    <div class="row mx-2 mt-5">
+        <h1 class="col-md-12 d-none d-md-block">File Grievance</h1>
+        <h1 class="col-md-12 d-sm-block d-md-none text-center">File Grievance</h1>
+    </div>
+    <div class="row mx-2 my-3">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-cont">
+                <div class="row mt-2">
+                    <div class="label-box col-xxl-2 col-lg-3 col-md-4 col-sm-12 mt-3">
+                        <label for="category" class="col-form-label">Select Category : </label>
+                    </div>
+                    <div class="select-box col-xxl-10 col-lg-9 col-md-8 col-sm-12 mt-3">
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="" disabled selected>Grievance Category</option>
+                            {% for category, cat in options.items %} 
+                                <option value="{{ cat }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="subject-box col">
+                        <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" 
+                            min="1" max="256" required>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="grievance-box col">
+                        <textarea class="grievance form-control" id="message" rows="10" placeholder="Describe your grievance" name="content"
+                        required min="1" max="2560"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="submit-box col">
+                        <input type="submit" value="Submit" class="btn btn-dark">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

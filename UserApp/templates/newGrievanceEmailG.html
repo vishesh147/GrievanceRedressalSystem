@@ -1,0 +1,38 @@
+<body>
+    <p>
+        Your grievance has been registered successfully. Details are as under:
+    </p>
+    <table>
+        <tr>
+           <td><b>Case ID</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.grievanceID }}</td>
+        </tr>
+        <tr>
+           <td><b>Category</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.get_category_display }}</td>
+        </tr>
+        <tr>
+           <td><b>Handling Authority</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ handler.user.get_full_name }}</td>
+        </tr>
+    </table> 
+    <br>
+    <i>
+        <p> Subject : {{ grievance.subject }}</p>
+        <p> {{ grievance.content }}	</p>
+    </i>
+    <br>
+    <p>
+        The concerned handling authority will get back to you as soon as possible.
+        You can view updates regarding the grievance on the GRC portal.
+    </p>
+    <p>
+        Regards,<br>
+        Grievance Redressal Cell, DAIICT
+    </p>  
+</body>   
+
+                     

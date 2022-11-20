@@ -1,0 +1,242 @@
+{% load static %}
+{% load django_jsonform %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %} {% endblock %}</title>
+<link rel="stylesheet" type='text/css' href="{% static 'css/grievance.css' %}">
+
+
+{% block include %} {% endblock %}
+<script src="{% static 'bootstrap/jquery.min.js' %}"></script>
+<div class="container-fluid full h-100">
+    <div class="row h-100"  id="parent">
+        <div class="details-cont col-lg-auto col-md d-lg-block d-none p-0">
+            <div id="sidebar" class="show collapse-horizontal h-100 mx-3">
+                <div class="row">
+                    <div class="g-details col-md-12 my-4">
+                        <h4 class="mx-1">Details</h4>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <td class="det-title">Case ID</td>
+                                <td>:</td>
+                                <td>{{ grievance.grievanceID  }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Grievant </td>
+                                <td>:</td>
+                                <td>{{ grievance.grievant.user.get_full_name  }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Grievant ID</td>
+                                <td>:</td>
+                                <td>{{ grievance.grievant.user.get_username }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Category</td>
+                                <td>:</td>
+                                <td>{{ grievance.get_category_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Level</td>
+                                <td>:</td>
+                                <td>{{ grievance.level }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row"><hr /></div>
+                <div class="row">
+                    <div class="g-status col-md-12 my-3">
+                        <h4 class="mx-1">Status Updates</h4>
+                        <ul>
+                            <li class="mt-3">
+                                Grievance Created<br>
+                                <small>{{ grievance.created | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% if grievance.level2 %}
+                            <li class="mt-3">
+                                Escalated To Level 2<br>
+                                <small>{{ grievance.level2 | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                            {% if grievance.level3 %}
+                            <li class="mt-3">
+                                Escalated To Level 3<br>
+                                <small>{{ grievance.level3 | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                            {% if grievance.solved %}
+                            <li class="mt-3">
+                                Grievance Solved<br>
+                                <small>{{ grievance.solved | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% elif grievance.rejected %}
+                            <li class="mt-3">
+                                Grievance Rejected<br>
+                                <small>{{ grievance.rejected | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="details-cont col-lg-auto d-lg-none d-block">
+            <div id="sidebar" class="collapse collapse-horizontal h-100">
+                <div class="row">
+                    <div class="g-details col-md-12 my-4">
+                        <h4 class="mx-1">Details</h4>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <td class="det-title">Grievant Name</td>
+                                <td>:</td>
+                                <td>{{ grievance.grievant.user.get_full_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Grievant ID</td>
+                                <td>:</td>
+                                <td>{{ grievance.grievant.user.get_username }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Category</td>
+                                <td>:</td>
+                                <td>{{ grievance.get_category_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="det-title">Level</td>
+                                <td>:</td>
+                                <td>{{ grievance.level }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row"><hr /></div>
+                <div class="row">
+                    <div class="g-status col-md-12 my-3">
+                        <h4 class="mx-1">Status Updates</h4>
+                        <ul>
+                            {% if grievance.level2 %}
+                            <li class="mt-3">
+                                Grievance Created<br>
+                                <small>{{ grievance.created | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                            {% if grievance.level2 %}
+                            <li class="mt-3">
+                                Escalated To Level 2<br>
+                                <small>{{ grievance.level2 | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                            {% if grievance.level3 %}
+                            <li class="mt-3">
+                                Escalated To Level 3<br>
+                                <small>{{ grievance.level3 | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                            {% if grievance.solved %}
+                            <li class="mt-3">
+                                Grievance Solved<br>
+                                <small>{{ grievance.solved | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% elif grievance.rejected %}
+                            <li class="mt-3">
+                                Grievance Rejected<br>
+                                <small>{{ grievance.rejected | date:"d M Y, D, h:i A" }}</small>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-cont" class="chat-cont col h-100">
+            <div id="subject" class="subject-wrapper row mx-auto mt-5 mb-2 px-md-5 px-3">
+                <div class="subject col-md-8 col-9">
+                    <h2>{{ grievance.subject }}</h2>
+                </div> 
+                {% block escalate %}
+                {% endblock %}
+                <hr class="mt-2"/>
+            </div>
+
+            <div class="row mx-auto px-md-5 px-2">
+                <div id="convo" class="convo col-md-12">
+                    <div class="msg-row row my-1 mx-md-2 mx-0">
+                        <div class="col-md-12 col-12">
+                            <div class="row">
+                                <div class="msg-g msg col p-3">
+                                    <div class="msg-header row px-1">
+                                        <div class="col-auto me-auto sender">
+                                            {{ grievance.grievant.user.get_full_name }}
+                                        </div>
+                                        <div class="col-auto ms-auto timestamp">
+                                            {{ grievance.created| date:"D, d M Y," }} 
+                                            {{ grievance.created | date:"h:i A" }}
+                                        </div>
+                                    </div>
+                                    <div class="content row m-1">
+                                        {{ grievance.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                {% for update in conversation %}
+                    <div class="msg-row row my-3 mx-md-2 mx-0">
+                        <div class="col-md-12 col-12">
+                            <div class="row">
+                                <div class="msg col p-3">
+                                    <div class="msg-header row px-1">
+                                        <div class="col-auto me-auto sender">
+                                            {{ update.sender.get_full_name }}
+                                        </div>
+                                        <div class="col-auto ms-auto timestamp">
+                                            {{ update.timestamp | date:"D, d M Y," }} 
+                                            {{ update.timestamp | date:"h:i A" }}
+                                        </div>
+                                    </div>
+                                    <div class="content row m-1">
+                                        {{ update.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mx-auto px-md-5 px-0">
+                <div class="msg-input col-md-12 mx-auto mt-3 mb-2" id="msg-input-box">
+                    <div class="d-flex pt-1" >
+                        {% block form %}
+                        {% endblock %}
+                    </div>              
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    window.onload=function () {
+        var convoObj = document.getElementById("convo");
+        convoObj.scrollTop = convoObj.scrollHeight;
+    }
+    var textarea = document.getElementById("msg-textarea");
+    var convo = document.getElementById("convo");
+    var heightLimit = 150;
+    var h = $("#parent").outerHeight(true) - $("#subject").outerHeight(true); 
+    convo.style.height = h - $("#msg-input-box").outerHeight(true) + "px";
+    textarea.oninput = function() {
+        textarea.style.height = ""; /* Reset the height*/
+        textarea.style.height = Math.min(textarea.scrollHeight, heightLimit) + "px";
+        convo.style.height = h - $("#msg-input-box").outerHeight(true) + "px";
+    };
+</script>
+
+
+

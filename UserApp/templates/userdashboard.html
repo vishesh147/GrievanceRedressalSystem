@@ -1,0 +1,35 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+
+{% block title %} Grievant Dashboard {% endblock %}
+
+{% block content %}
+<div class="d-grid d-none d-md-block">
+    <a href="{% url 'fileGrievance' %}">
+        <button type="button" class="btn btn-dark btn-block">New Grievance +</button>
+    </a>
+</div>
+<div class="d-grid d-sm-block d-md-none">
+    <a href="{% url 'fileGrievance' %}">
+        <button type="button" class="btn btn-dark btn-block">New +</button>
+    </a>
+</div>
+
+{% endblock %}
+
+
+{% block tbody %}
+    {% for g in grievances %}
+        <tr class="clickable grievance" key='{{ g }}' 
+        link="{% url 'grievance' gID=g %}" status="{{ g.status }}">
+                <td class="col-md-4 text-start subject">{{ g.subject }}</td>
+                <td class="col-md-2 date">{{ g.created | date:"d-M-Y" }}</td>
+                <td class="col-md-4 category">{{ g.get_category_display }}</td>
+                <td class="col-md-2 status" status="{{ g.status }}">{{ g.get_status_display }}</td>
+            </tr> 
+        {% empty %}
+            <tr><td colspan="4"> <i> No grievances filed. </i></tr>
+    {% endfor %}
+{% endblock %}
+
+

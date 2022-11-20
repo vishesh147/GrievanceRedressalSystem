@@ -1,0 +1,46 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}
+Upload Grievant Data
+{% endblock %}
+
+
+{% block content %}
+<h1>Add Grievants</h1>
+<form method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+    {% csrf_token %}
+    <div class="form-group">
+        <div style="margin-bottom: 1% !important;">
+            <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">Upload CSV File: </label>
+        </div>
+        <div style="padding: 0; margin-bottom: 1% !important;">
+            <input type="file" name="csvfile" id="csvfile" required="True" class="form-control">
+        </div>                    
+    </div>
+    <div class="form-group">
+        <div style="margin-bottom: 1% !important;">
+            <label for="gtype" class="col-md-3 col-sm-3 col-xs-12 control-label">Grievant Type: </label>
+        </div>
+        <select name="gtype" id="gtype" style="margin-bottom: 2% !important;">
+            <option value="student">Student</option>
+            <option value="faculty">Faculty</option>
+            <option value="staff">Staff</option>
+        </select>                   
+    </div>
+    <div class="form-group">                    
+        <div style="margin-bottom: 3%;">
+             <input type="submit" value="Add Data">
+        </div> 
+    </div>
+</form>
+
+{% if failed %}
+<div>
+    The following grievants could not be added properly:<br><br>
+    {% for f in failed %}
+        {{ f }}<br>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

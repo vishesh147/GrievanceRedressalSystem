@@ -1,0 +1,9 @@
+{% extends 'grievance.html' %}
+
+{% load static %}
+
+{% block title %} User Grievance {% endblock %}
+
+{% block include %}
+    {% include 'navbar.html' with user=1 grievance=1 %}
+{% endblock %}

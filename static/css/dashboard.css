@@ -1,0 +1,48 @@
+
+.g-row {
+    text-align: right;
+    justify-content: right;
+}
+
+.create-btn {   
+    height: 100%;
+    display: block;
+    width: fit-content;
+}
+
+.create-btn a{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.status{
+    font-weight: bold;
+}
+
+.status[status="0"]{
+    color: rgb(0, 132, 255);
+}
+.status[status="-1"]{
+    color: rgb(241, 0, 0);
+}
+.status[status="1"]{
+    color: rgb(52, 184, 0);
+}
+
+
+.show-all a{
+    text-decoration: none;
+    color: rgb(75, 75, 75);
+    font-weight: 500;
+}
+
+.right-padding {
+    padding-right: 0 !important;
+}
+
+.table tr{
+    border-color: rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,33 @@
+{% extends 'landing.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-md-10 col-9 mx-auto mb-3">
+    <h1>OTP Verification</h1>
+    <hr class="horizontal-divider" />
+    <div class="mb-2">
+      Enter the OTP sent to your registered email address to login. 
+    </div>
+</div>
+<div class="col-md-10 col-9 mx-auto">
+    <form method="POST">
+        {% csrf_token %}
+      <div class="mb-2">
+        <input type="text" name="iOTP" placeholder="Enter OTP"
+          class="form-control"
+          id="otp"
+          maxlength="6" size="6"
+          required
+        />
+      </div>
+      <div class="mb-3 text-center">
+        <a style="text-decoration: none;" href="{% url 'OTPlogin' %}">Resend OTP</a>
+      </div>
+      <button type="submit" class="btn btn-success w-100">
+          Confirm
+      </button>
+    </form>
+</div>
+
+{% endblock %}

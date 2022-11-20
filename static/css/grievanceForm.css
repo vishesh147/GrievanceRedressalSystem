@@ -1,0 +1,8 @@
+.submit-box{
+    text-align: right;
+}
+
+.submit-box input{
+    min-width: 100px;
+    width: 20%;
+}

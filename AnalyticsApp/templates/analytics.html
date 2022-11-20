@@ -1,0 +1,337 @@
+{% load static %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grievance Analytics</title>
+<link rel="stylesheet" type='text/css' href="{% static 'css/analytics.css' %}">
+
+
+{% include 'navbar.html' with analytics=1 %}
+<script src="{% static 'bootstrap/chart.min.js' %}"></script>
+<script src="{% static 'bootstrap/jquery.min.js' %}"></script>
+<div class="container h-100">
+    <div class="row pt-4 ms-lg-4">
+        <div class="col-lg-4 col-10 mx-auto mb-lg-0 mb-5">
+            <div class="row mb-2">
+                <div class="col-3 d-flex align-items-center">
+                    <label for='selectYear'><b>Year</b></label>
+                </div>
+                <div class="col-lg-auto">
+                    <select id='selectYear' class="year form-select" onChange="window.location.href=this.value">
+                        <option value="" disabled>Select Year</option>
+                        {% for y in years %}
+                            {% if y == currYear %}
+                            <option value='{% url "analytics" year=y|date:"Y" gType=GType category=Category %}' selected>{{ y|date:"Y" }}</option>
+                            {% else %}
+                            <option value='{% url "analytics" year=y|date:"Y" gType=GType category=Category %}'>{{ y|date:"Y" }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+            </div>
+            <div class="row mb-2">
+                <div class="col-lg-3 d-flex align-items-center">
+                    <label for="cselect"><b>Category</b></label>
+                </div>
+                <div class="col-lg">
+                    <select id="cselect" class="year form-select" 
+                    onChange="window.location.href=this.options[this.selectedIndex].value">
+                    <option value='{% url "analytics" year=Year gType="gtype" category="category" %}'>
+                        View All Greivances</option>
+                    <optgroup label="Student">
+                        <option value='{% url "analytics" year=Year gType="student" category="academic" %}'>
+                            Teaching-Learning and Evaluation</option>
+                        <option value='{% url "analytics" year=Year gType="student" category="registration" %}'>
+                            Registration, Fees, Results and Transcripts</option>
+                        <option value='{% url "analytics" year=Year gType="student" category="placement" %}'>
+                            Internships and Placement</option>
+                        <option value='{% url "analytics" year=Year gType="student" category="general" %}'>
+                            General Amenities and Services</option>
+                        <option value='{% url "analytics" year=Year gType="student" category="stud2stud" %}'>
+                            Student to Student Grievances</option>
+                    </optgroup>
+                    <optgroup label="Faculty">
+                        <option value='{% url "analytics" year=Year gType="faculty" category="hra" %}'>
+                            Human Resource and Administration</option>
+                        <option value='{% url "analytics" year=Year gType="faculty" category="facultyAction" %}'>
+                            Matters related to an Action of any Member of the Faculty</option>
+                        <option value='{% url "analytics" year=Year gType="faculty" category="staffAction" %}'>
+                            Matters related to an Action of any Member of the Staff</option>
+                        <option value='{% url "analytics" year=Year gType="faculty" category="service" %}'>
+                            Matters related to Service Conditions</option>
+                    </optgroup>
+                    <optgroup label="Staff">
+                        <option value='{% url "analytics" year=Year gType="staff" category="hra" %}'>
+                            Human Resource and Administration</option>
+                        <option value='{% url "analytics" year=Year gType="staff" category="facultyAction" %}'>
+                            Matters related to an Action of any Member of the Faculty</option>
+                        <option value='{% url "analytics" year=Year gType="staff" category="staffAction" %}'>
+                            Matters related to an Action of any Member of the Staff</option>
+                        <option value='{% url "analytics" year=Year gType="staff" category="service" %}'>
+                            Matters related to Service Conditions</option>
+                    </optgroup>
+                </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-4 text-center">
+                    <p class="title">Total Responses</p>
+                    {% if Gtotal %}
+                        <p class="time">{{ Gtotal }}</p>
+                    {% else %}
+                        <p class="time"> -- </p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 text-center">
+                    <p class="title">Avg. Response Time</p>
+                    {% if resolution %}
+                        <p class="time">{{ response }}</p>
+                    {% else %}
+                        <p class="time"> -- </p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 text-center">
+                    <p class="title">Avg. Resolution Time</p>
+                    {% if resolution %}
+                        <p class="time">{{ resolution }}</p>
+                    {% else %}
+                        <p class="time"> -- </p>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row chart-row" style="height: 75%;">
+        <div class="col-lg-4 my-4">
+            <div class="row h-100">
+                <div class="col-lg-12 mx-auto pb-4" style="height: 50%;">
+                    {% if Sdata %}
+                    <canvas id="statusDonutChart" class="donutChart"></canvas>
+                    {% else %}
+                    <canvas id="emptyDonutChart1" class="donutChart" style="height: 40%;"></canvas>
+                    {% endif %}
+                </div>
+                <div class="col-lg-12 mx-auto pb-4" style="height: 50%;">
+                    {% if Cdata %}
+                    <canvas id="catDonutChart" class="donutChart"></canvas>
+                    {% else %}
+                    <canvas id="emptyDonutChart2" class="donutChart"></canvas>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 my-4 pb-4 px-4" style="min-height: 50vh; height: 100%;">
+            <canvas id="barChart" class="barChart"></canvas>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $("#cselect").val('{% url "analytics" year=Year gType=GType category=Category %}');
+    const ctx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [
+                {
+                    label: 'Level 1',
+                    data: {{ Gdata.0 }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Level 2',
+                    data: {{ Gdata.1 }},
+                    backgroundColor: 'rgba(171, 69, 255, 0.2)',
+                    borderColor: 'rgba(171, 69, 255, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Level 3',
+                    data: {{ Gdata.2 }},
+                    backgroundColor: 'rgba(240, 5, 95, 0.2)',
+                    borderColor: 'rgba(240, 5, 95, 1)',
+                    borderWidth: 1,
+                },
+            ]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Monthly Grievances',
+                    font: {size: '16'},
+                },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    const statusDonutCtx = document.getElementById('statusDonutChart').getContext('2d');
+    const statusDonutChart = new Chart(statusDonutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Solved', 'Rejected', 'In Progress'],
+            datasets: [
+                {
+                    label: 'Status',
+                    data: {{ Sdata }},
+                    backgroundColor: ['rgba(36, 173, 48, 0.5)', 'rgba(214, 66, 66, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                    borderColor: ['rgba(36, 173, 48, 0.8)', 'rgba(214, 66, 66, 0.8)', 'rgba(54, 162, 235, 0.8)'],
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            radius: '80%',
+            circumference: '180',
+            rotation: '-90',
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Grievances: Status',
+                    font: {size: '16'},
+                },
+            },
+        },
+    });
+</script>
+
+<script>
+    const catDonutCtx = document.getElementById('catDonutChart').getContext('2d');
+    const catDonutChart = new Chart(catDonutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ CLabels|safe }},
+            datasets: [
+                {
+                    label: 'Category',
+                    data: {{ Cdata }},
+                    backgroundColor: ['rgba(240, 129, 50, 0.5)', 'rgba(217, 37, 169, 0.5)', 'rgba(45, 76, 227, 0.5)',
+                        'rgba(78, 212, 203, 0.5)', 'rgba(58, 201, 123, 0.5)'],
+                    borderColor: ['rgba(240, 129, 50, 0.8)', 'rgba(217, 37, 169, 0.8)', 'rgba(45, 76, 227, 0.8)',
+                        'rgba(78, 212, 203, 0.8)', 'rgba(58, 201, 123, 0.8)'],
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            radius:'{{ catSize }}',
+            circumference: '180',
+            rotation: '-90',
+            plugins: {
+                legend: {
+                    display: {{ catDisplay }},
+                },
+                title: {
+                    display: true,
+                    text: 'Grievances: ' + '{{ cat }}',
+                    font: {size: '16'},
+                },
+            },
+        },
+    });
+
+</script>
+
+
+<script>
+    const emptyDonutCtx1 = document.getElementById('emptyDonutChart1').getContext('2d');
+    const emptyDonutChart1 = new Chart(emptyDonutCtx1, {
+        type: 'doughnut',
+        data: {
+            labels: ['No Grievances'],
+            datasets: [
+                {
+                    label: 'Status',
+                    data: [1],
+                    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    borderColor: 'rgba(0, 0, 0, 0.3)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            radius: '80%',
+            circumference: '180',
+            rotation: '-90',
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Greivances: Status',
+                    font: {size: '16'},
+                },
+            },
+        },
+    });
+</script>
+
+<script>
+    const emptyDonutCtx2 = document.getElementById('emptyDonutChart2').getContext('2d');
+    const emptyDonutChart2 = new Chart(emptyDonutCtx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['No Grievances'],
+            datasets: [
+                {
+                    label: 'Status',
+                    data: [1],
+                    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    borderColor: 'rgba(0, 0, 0, 0.3)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            radius: '{{ catSize }}',
+            circumference: '180',
+            rotation: '-90',
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                legend:{
+                    display: false,
+                },
+                title: {
+                    display: true,
+                    text: 'Grievances: ' + '{{ cat }}',
+                    font: {size: '16'},
+                },
+            },
+        },
+    });
+</script>

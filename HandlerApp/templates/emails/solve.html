@@ -1,0 +1,34 @@
+<body>
+    <p>
+        Your grievance has been <b>SOLVED</b> successfully.
+    </p>
+    <table>
+        <tr>
+           <td><b>Case ID</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.grievanceID }}</td>
+        </tr>
+        <tr>
+           <td><b>Category</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.get_category_display }}</td>
+        </tr>
+        <tr>
+           <td><b>Subject</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.subject }}</td>
+        </tr>
+    </table> 
+    <br>
+    <p>
+        <b>{{ handler.user.get_full_name }}</b><br>
+        <i>{{ grievance.solved | date:"d M Y, D, h:i A" }}</i><br>
+        {{ message }}
+    </p>
+    <p>
+        Regards,<br>
+        Grievance Redressal Cell, DAIICT
+    </p>  
+</body>   
+
+                     

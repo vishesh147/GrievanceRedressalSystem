@@ -1,0 +1,45 @@
+{% extends 'landing.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% block content %}
+
+<div class="col-md-10 col-9 mx-auto mb-1">
+    <h1>Create New Password</h1>
+    <hr class="horizontal-divider" />
+</div>
+<div class="col-md-10 col-9 mx-auto">
+    {% if form.errors %}
+    <ul class="errorlist text-danger text-start mb-3">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}  
+                <li>{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-2">
+            <input type="password" name="new_password1" placeholder="New Password" class="form-control"
+            id="id_new_password1" autocomplete="new-password" required /> 
+        </div>
+        <div class="mb-2">
+            <input type="password" name="new_password2" placeholder="Confirm New Password" class="form-control" 
+            id="id_new_password2" autocomplete="new-password" required />
+        </div>
+        <input type="submit" class="mt-2 btn btn-success w-100" value="Change Password">
+    </form>
+    <ul class="text-start mb-4 text-muted">
+        <li>Your password must contain at least 8 characters.</li>
+        <li>Your password should not be a commonly used password.</li>
+        <li>Your password should not be entirely numeric.</li>
+    </ul>
+</div>
+
+{% endblock %}

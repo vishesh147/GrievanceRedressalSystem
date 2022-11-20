@@ -1,0 +1,31 @@
+{% extends 'landing.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% block content %}
+<div class="col-md-10 col-9 mx-auto mb-1">
+    <h1> Password Reset </h1>
+    <hr class="horizontal-divider" />
+</div>
+<p class="mb-4">Please enter your Email ID to receive a password reset link.</p>
+<div class="col-md-10 col-9 mx-auto">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-2">
+            <input type="email" name="email" placeholder="Enter Email Address" class="form-control"
+            id="id_email" required />
+        </div>
+        <button type="submit" class="btn btn-info w-100">
+            Send Reset Link
+        </button>
+    </form>
+    <div class="mb-3 me-1 text-end">
+        <a style="text-decoration: none; color: rgba(15, 15, 15, 0.5);" href="{% url 'landing' %}"><b>Return To Login</b></a>
+    </div>
+</div>         
+{% endblock %}

@@ -1,0 +1,11 @@
+.title{
+    font-size: 17;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.time{
+    font-size: 34px;
+    font-weight: bold;
+    color:rgba(0, 5, 30, 0.75);
+}

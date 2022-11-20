@@ -1,0 +1,38 @@
+<body>
+    <p>
+        Your grievance has a new update. 
+    </p>
+    <table>
+        <tr>
+           <td><b>Case ID</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.grievanceID }}</td>
+        </tr>
+        <tr>
+           <td><b>Category</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.get_category_display }}</td>
+        </tr>
+        <tr>
+           <td><b>Subject</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.subject }}</td>
+        </tr>
+    </table> 
+    <br>
+    <p> 
+        <b>{{ update.sender.get_full_name }}</b>
+        <i>{{ update.timestamp | date:"d M Y, D, h:i A" }}</i><br><br>
+        {{ update.content }}
+    </p>
+    <br>
+    <p>
+        You can view updates regarding the grievance on the GRC portal.
+    </p>
+    <p>
+        Regards,<br>
+        Grievance Redressal Cell, DAIICT
+    </p>  
+</body>   
+
+                     

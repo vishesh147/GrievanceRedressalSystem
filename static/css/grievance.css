@@ -1,0 +1,92 @@
+.full{
+    overflow-y: hidden;
+}
+
+.convo{
+    overflow-y: scroll;
+}
+.convo::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+.convo::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+.convo::-webkit-scrollbar-thumb {
+    background-color: rgba(50, 50, 50, 0.5);
+    border-radius: 10px;
+}
+
+.msg{
+    background: rgba(250, 235, 218, 0.7); 
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.2);
+}
+.msg-g{
+    background: rgb(250, 230, 218, 0.9);
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.2);
+}
+
+.msg .sender{
+    font-weight:500;
+    font-size: 16px;
+}
+
+.msg .content{
+    font-size: 16px;
+}
+
+.msg .timestamp{
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.500);
+}
+
+.msg-input{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.msg-input textarea::-webkit-scrollbar {
+    width: 3px;
+    height: 5px;
+}
+.msg-input textarea::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+.msg-input textarea::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 10px;
+}
+
+.subject h2{
+    /* border-bottom: 1px solid rgba(16, 15, 14, 0.35); */
+    font-size: 30px;
+}
+
+.details-cont{
+    border-right: 1px solid rgba(16, 16, 14, 0.35);
+}
+
+.table, .g-status{
+    font-size: 16px;
+}
+
+
+.details-cont h4{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.g-details .det-title{
+    color: rgb(16, 16, 14);
+    font-weight: 500;
+}
+
+.g-status small{
+    padding-left: 1rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.500);;
+}

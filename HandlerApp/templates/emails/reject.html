@@ -1,0 +1,33 @@
+<body>
+    <p>
+        Your grievance has been <b>REJECTED<b/>.
+    </p>
+    <table>
+        <tr>
+           <td><b>Case ID</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.grievanceID }}</td>
+        </tr>
+        <tr>
+           <td><b>Category</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.get_category_display }}</td>
+        </tr>
+        <tr>
+           <td><b>Subject</b></td>
+           <td>&nbsp; : &nbsp;</td>
+           <td>{{ grievance.subject }}</td>
+        </tr>
+    </table> 
+    <br>
+    <p>
+        <b>Reason for Rejection : </b><br/>
+        {{ reason }}
+    </p>
+    <p>
+        Regards,<br>
+        Grievance Redressal Cell, DAIICT
+    </p>  
+</body>   
+
+                     

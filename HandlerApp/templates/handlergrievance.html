@@ -1,0 +1,221 @@
+{% extends 'grievance.html' %}
+
+{% load static %}
+
+{% load django_jsonform %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% block title %} Handle Grievance {% endblock %}
+
+{% block include %}
+    {% include 'navbar.html' with handler=1 grievance=1 %}
+{% endblock %}
+
+
+{% block escalate %}
+
+    {% if grievance.level != handlerLevel or grievance.status != 0 %}
+    <div class="col-md-4 col-3 justify-content-end text-nowrap d-none d-md-block text-end">
+        {% if grievance.level < 3 %}
+            <a type="button" class="btn btn-info disabled"
+            href="{% url 'escalate' gID=grievance %}">
+                Escalate to Level {{ grievance.level|add:"1" }}
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4 col-3 justify-content-end text-nowrap d-block d-md-none text-end">
+        {% if grievance.level < 3 %}
+            <a type="button" class="btn btn-info disabled"
+            href="{% url 'escalate' gID=grievance %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+            </svg> {{ grievance.level|add:"1" }}
+            </a>
+        {% endif %}
+    </div>
+
+    {% else %}
+    
+    <div class="col-md-4 col-3 justify-content-end text-nowrap d-none d-md-block text-end">
+        {% if grievance.level < 3 %}
+            <a type="button" class="btn btn-info"
+            href="{% url 'escalate' gID=grievance %}">
+                Escalate to Level {{ grievance.level|add:"1" }}
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4 col-3 justify-content-end text-nowrap d-block d-md-none text-end">
+        {% if grievance.level < 3 %}
+            <a type="button" class="btn btn-info"
+            href="{% url 'escalate' gID=grievance %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+            </svg> {{ grievance.level|add:"1" }}
+            </a>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+{% endblock %}
+
+
+
+{% block form %}
+
+{% if grievance.level != handlerLevel or grievance.status != 0 %}
+<div class="d-none d-md-block">
+    <a type="button" class="btn btn-danger mx-1 align-self-end text-nowrap disabled"
+        href="{% url 'reject' gID=grievance %}">Reject</a>
+</div>
+<div class="d-sm-block d-md-none">
+    <a type="button" class="btn btn-danger mx-1 align-self-end text-nowrap disabled"
+        href="{% url 'reject' gID=grievance %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    </a>
+</div>
+
+<div class="d-none d-md-block">
+    <a type="button" class="btn btn-success mx-1 me-2 align-self-end text-nowrap disabled"
+    href="{% url 'solve' gID=grievance %}">Mark As Solved</a>
+</div>
+<div class="d-sm-block d-md-none">
+    <a type="button" class="btn btn-success mx-1 me-2 align-self-end text-nowrap disabled"
+    href="{% url 'solve' gID=grievance %}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+            <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+            <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+        </svg>
+    </a>
+</div>
+
+<form method="POST" class="d-flex w-100">
+    {% csrf_token %}
+    <textarea id='msg-textarea' class="form-control mx-2" name="message" rows="1" required placeholder="Enter new update" disabled></textarea>
+    <div class="d-none d-md-block">
+        <button type="submit" class="btn btn-dark mx-2 align-self-end" disabled>Send</button>
+    </div>
+    <div class="d-sm-block d-md-none">
+        <button type="submit" class="btn btn-dark mx-2 align-self-end" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+            </svg>
+        </button> 
+    </div>
+</form>
+
+
+{% else %}
+
+<div class="d-none d-md-block">
+    <button type="button" class="btn btn-danger mx-1 align-self-end text-nowrap" 
+        data-bs-toggle="modal" data-bs-target="#rejectModal">
+        Reject
+    </button>
+</div>
+<div class="d-sm-block d-md-none">
+    <button type="button" class="btn btn-danger mx-1 align-self-end text-nowrap" 
+        data-bs-toggle="modal" data-bs-target="#rejectModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    </button>
+</div>
+
+<div class="d-none d-md-block">
+    <button type="button" class="btn btn-success mx-1 align-self-end text-nowrap" 
+        data-bs-toggle="modal" data-bs-target="#solveModal">
+        Mark As Solved
+    </button>
+</div>
+<div class="d-sm-block d-md-none">
+    <button type="button" class="btn btn-success mx-1 align-self-end text-nowrap" 
+        data-bs-toggle="modal" data-bs-target="#solveModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+            <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+            <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+        </svg>
+    </button>
+</div>
+
+<form method="POST" class="d-flex w-100">
+    {% csrf_token %}
+    <textarea id='msg-textarea' class="form-control mx-2" name="message" rows="1" required placeholder="Enter new update"></textarea>
+    <div class="d-none d-md-block">
+        <button type="submit" class="btn btn-dark mx-2 align-self-end">Send</button>
+    </div>
+    <div class="d-sm-block d-md-none">
+        <button type="submit" class="btn btn-dark mx-2 align-self-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+            </svg>
+        </button> 
+    </div>
+</form>
+
+<!-- Reject modal -->
+<div class="modal fade" id="rejectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rejectModalLabel">Reject Grievance</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" class="m-2" action="{% url 'reject' gID=grievance %}">
+            {% csrf_token %}
+            <div class="modal-body">
+                <textarea class="form-control" name="reason" rows="4" required 
+                    placeholder="Please provide a valid reason"></textarea>
+                <div class="form-check form-check-inline mt-3">
+                    <input class="form-check-input" type="checkbox" id="dac-checkbox" value="DAC">
+                    <label class="form-check-label" for="inlineCheckbox1">Notify DAC</label>
+                </div>    
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" value="Reject"/>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<!-- Solve modal -->
+<div class="modal fade" id="solveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="solveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="solveModalLabel">Mark Grievance As Solved</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" class="m-2" action="{% url 'solve' gID=grievance %}">
+            {% csrf_token %}
+            <div class="modal-body">
+                <textarea class="form-control" name="message" rows="4" placeholder="Add a message" required></textarea>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success" value="Mark As Solved"/>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+
+{% endif %}
+
+{% endblock %}
+
+
+

@@ -1,0 +1,9 @@
+Django==4.0.4
+django_import_export==2.9.0
+html2text==2020.1.16
+import_export==0.2.67.dev6
+pytz==2022.1
+django-jsonform
+django-rest-framework
+psycopg2
+mysqlclient
